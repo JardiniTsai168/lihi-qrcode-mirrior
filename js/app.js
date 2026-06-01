@@ -2127,11 +2127,6 @@
 
         if (!hamburger || !mobileMenu || !mobileOverlay) return;
 
-        // Keep the nodes rendered and let CSS handle visibility so touch events
-        // don't get stuck behind the hidden/open state mix.
-        mobileMenu.hidden = false;
-        mobileOverlay.hidden = false;
-
         function setMenuState(isOpen) {
             mobileMenu.classList.toggle('open', isOpen);
             mobileOverlay.classList.toggle('open', isOpen);
