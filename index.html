@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lihi | 免費QR Code 產生器</title>
+    <meta name="description" content="免費製作精美客製化 QR Code，支援網址、WiFi、電話、信箱、簡訊多種類型。">
+    <link rel="shortcut icon" href="./assets/images/favicon-16x16.png" type="image/jpeg"/>
+    <link rel="apple-touch-icon" href="./assets/images/favicon-32x32.png" type="image/jpeg"/>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="lihi | 免費QR Code 產生器">
+    <meta property="og:description" content="免費製作精美客製化 QR Code，支援網址、WiFi、電話、信箱、簡訊多種類型。">
+    <meta property="og:image" content="https://lihi.io/assets/images/lihi-logo.png">
+    <meta property="og:url" content="https://lihi.io/qrcode">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lihi-pink': '#ff6699',
+                        'lihi-blue': '#020266',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Awesome QR Library -->
+    <script src="https://cdn.jsdelivr.net/npm/awesome-qr@2.1.5-rc.0/dist/awesome-qr.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5GKMJC8');
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen" style="margin: 26px auto 0 auto; padding: 0 18px;">
+    <iframe id="qrcodeAuth" style="display:none"></iframe>
+    <!-- Header -->
+        <nav class="max-w-4xl mx-auto" style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 14px; border: 1px solid rgba(15, 23, 42, .08); background: rgba(255, 255, 255, .78); backdrop-filter: blur(8px); border-radius: 18px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);">
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <img src="./images/lihi-logo-Icon-1080px.png" alt="lihi logo" class="w-10 h-10">
+                <div>
+                    <h1 class="text-sm sm:text-lg font-bold text-gray-800">lihi | 免費QR Code 產生器</h1>
+                    <p class="text-xs text-gray-500">製作最有效的行銷 QR Code</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="https://app.lihi.io/admin/search" target="_blank" class="text-gray-600 hover:text-lihi-blue font-medium text-sm transition-colors">註冊品牌網域</a>
+                    <a href="https://knowledge.lihi.io/" target="_blank" class="text-gray-600 hover:text-lihi-blue font-medium text-sm transition-colors">行銷知識庫</a>
+                </div>
+                <a href="https://app.lihi.io/admin/dashboard" class="px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-lihi-blue hover:bg-opacity-90 rounded-xl transition-colors text-center whitespace-nowrap">回 lihi 後台</a>
+            </div>
+        </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto pt-8 pb-2 md:pb-8">
+        <!-- Step 1: Settings -->
+        <div id="step1" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">第一步 - 設定</h3>
+                <span class="text-sm text-gray-500">類型：<span id="currentType">網址</span></span>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-100 mb-6"></div>
+
+            <!-- QR Type Tabs -->
+            <div class="flex gap-4 sm:gap-6 mb-6 border-b border-gray-200 overflow-x-auto pb-0 -mx-2 px-2">
+                <button class="qr-type-tab active pb-3 text-sm font-medium text-lihi-blue border-b-2 border-lihi-blue transition-all flex-shrink-0" data-type="url">
+                    網址
+                </button>
+                <button class="qr-type-tab pb-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 transition-all flex-shrink-0" data-type="wifi">
+                    WiFi
+                </button>
+                <button class="qr-type-tab pb-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 transition-all flex-shrink-0" data-type="phone">
+                    電話
+                </button>
+                <button class="qr-type-tab pb-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 transition-all flex-shrink-0" data-type="email">
+                    信箱
+                </button>
+                <button class="qr-type-tab pb-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300 transition-all flex-shrink-0" data-type="sms">
+                    簡訊
+                </button>
+            </div>
+
+            <!-- Error Message Box -->
+            <div id="errorBox" class="hidden bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                <p class="text-red-600 text-sm font-medium mb-1">以下欄位尚未完成：</p>
+                <p id="errorMessage" class="text-red-600 text-sm">• 請輸入網址</p>
+            </div>
+
+            <!-- Tab Content: URL -->
+            <div id="tabUrl" class="tab-content">
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            網址
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <div class="w-full sm:flex-1">
+                                <input
+                                    type="text"
+                                    id="urlInput"
+                                    placeholder="https://lihi.io"
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                                >
+                                <!-- Mobile only hint text -->
+                                <p class="mt-2 text-sm text-gray-400 block sm:hidden">輸入要生成 QR Code 的網址。</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    id="createShortUrlBtn"
+                                    class="w-auto sm:w-auto px-3 py-2 sm:px-4 sm:py-3 bg-lihi-blue text-white text-sm sm:text-base font-medium rounded-lg sm:rounded-xl hover:bg-lihi-blue/90 transition-all whitespace-nowrap"
+                                >
+                                    產生短網址
+                                </button>
+                                <!-- Tooltip -->
+                                <div class="group relative inline-flex items-center">
+                                    <span class="w-5 h-5 rounded-full bg-gray-200 text-gray-500 text-xs flex items-center justify-center cursor-help hover:bg-gray-300 transition-colors">?</span>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-4 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-56 sm:w-64 leading-relaxed">
+                                        用短網址設定的 QR Code，可以隨時替換網址。印好的 QR Code 永遠不用作廢，不需要重印！
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-800"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Desktop only hint text -->
+                        <p class="mt-2 text-sm text-gray-400 hidden sm:block">輸入要生成 QR Code 的網址。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: WiFi -->
+            <div id="tabWifi" class="tab-content hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            WiFi 名稱 (SSID)
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="wifiSsidInput"
+                            placeholder="輸入 WiFi 名稱"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                        >
+                        <p class="mt-2 text-sm text-gray-400">SSID 僅能使用英文，且大小寫需與 Wi-Fi 名稱完全相符。</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">加密方式</label>
+                        <select
+                            id="wifiEncryption"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white"
+                        >
+                            <option value="WPA">WPA/WPA2</option>
+                            <option value="WEP">WEP</option>
+                            <option value="nopass">無密碼</option>
+                        </select>
+                    </div>
+                    <div id="wifiPasswordField">
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            密碼
+                            <span id="wifiPasswordRequired" class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="wifiPasswordInput"
+                                placeholder="輸入 WiFi 密碼"
+                                class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                            >
+                            <button
+                                type="button"
+                                id="toggleWifiPassword"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                <svg class="w-5 h-5 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <svg class="w-5 h-5 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Phone -->
+            <div id="tabPhone" class="tab-content hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            國家/地區
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <select
+                            id="phoneCountryCode"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white"
+                        >
+                            <option value="+886">台灣 (+886)</option>
+                            <option value="+86">中國 (+86)</option>
+                            <option value="+852">香港 (+852)</option>
+                            <option value="+853">澳門 (+853)</option>
+                            <option value="+81">日本 (+81)</option>
+                            <option value="+82">韓國 (+82)</option>
+                            <option value="+65">新加坡 (+65)</option>
+                            <option value="+60">馬來西亞 (+60)</option>
+                            <option value="+66">泰國 (+66)</option>
+                            <option value="+63">菲律賓 (+63)</option>
+                            <option value="+84">越南 (+84)</option>
+                            <option value="+62">印尼 (+62)</option>
+                            <option value="+91">印度 (+91)</option>
+                            <option value="+1">美國/加拿大 (+1)</option>
+                            <option value="+44">英國 (+44)</option>
+                            <option value="+49">德國 (+49)</option>
+                            <option value="+33">法國 (+33)</option>
+                            <option value="+61">澳洲 (+61)</option>
+                            <option value="+64">紐西蘭 (+64)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            電話號碼
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <input
+                            type="tel"
+                            id="phoneInput"
+                            placeholder="9xx-xxx-xxx"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                        >
+                        <p class="mt-2 text-sm text-gray-400">請輸入不含國碼的電話號碼。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Email -->
+            <div id="tabEmail" class="tab-content hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            收件人信箱
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="emailInput"
+                            placeholder="example@email.com"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                        >
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            預設主旨
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="emailSubject"
+                            placeholder="請輸入郵件預設主旨"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                        >
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            預設內容
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <textarea
+                            id="emailBody"
+                            placeholder="請輸入郵件預設內容"
+                            rows="3"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all resize-none"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: SMS -->
+            <div id="tabSms" class="tab-content hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            國家/地區
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <select
+                            id="smsCountryCode"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white"
+                        >
+                            <option value="+886">台灣 (+886)</option>
+                            <option value="+86">中國 (+86)</option>
+                            <option value="+852">香港 (+852)</option>
+                            <option value="+853">澳門 (+853)</option>
+                            <option value="+81">日本 (+81)</option>
+                            <option value="+82">韓國 (+82)</option>
+                            <option value="+65">新加坡 (+65)</option>
+                            <option value="+60">馬來西亞 (+60)</option>
+                            <option value="+66">泰國 (+66)</option>
+                            <option value="+63">菲律賓 (+63)</option>
+                            <option value="+84">越南 (+84)</option>
+                            <option value="+62">印尼 (+62)</option>
+                            <option value="+91">印度 (+91)</option>
+                            <option value="+1">美國/加拿大 (+1)</option>
+                            <option value="+44">英國 (+44)</option>
+                            <option value="+49">德國 (+49)</option>
+                            <option value="+33">法國 (+33)</option>
+                            <option value="+61">澳洲 (+61)</option>
+                            <option value="+64">紐西蘭 (+64)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            電話號碼
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <input
+                            type="tel"
+                            id="smsPhoneInput"
+                            placeholder="9xx-xxx-xxx"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                        >
+                        <p class="mt-2 text-sm text-gray-400">請輸入不含國碼的電話號碼。</p>
+                    </div>
+                    <div>
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            預設簡訊內容
+                            <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">必填</span>
+                        </label>
+                        <textarea
+                            id="smsBodyInput"
+                            placeholder="請輸入預設簡訊內容"
+                            rows="3"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all resize-none"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-3 mt-6 pt-6 border-t border-gray-100">
+                <button id="nextStepBtn" class="px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all">
+                    下一步
+                </button>
+                <button id="clearBtn" class="px-6 py-3 bg-gray-100 text-gray-600 rounded-xl font-medium hover:bg-gray-200 transition-all">
+                    清空
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Preview & Style -->
+        <div id="step2" class="bg-white rounded-2xl shadow-sm p-6 mb-6 hidden">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">第二步 - 預覽與樣式</h3>
+                <div class="text-right text-sm text-gray-500">
+                    <div>類型：<span id="currentTypePreview">網址</span></div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-100 mb-6"></div>
+
+            <!-- Upload Fields Row (Full Width) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <!-- Logo Upload -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                        上傳 Logo
+                        <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">選填</span>
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <label id="logoUploadLabel" class="flex-1 flex items-center gap-2 px-3 py-3 border border-gray-200 rounded-xl cursor-pointer hover:border-lihi-blue hover:bg-lihi-blue/5 transition-all overflow-hidden">
+                            <span class="text-gray-400 text-sm truncate" id="logoFileName">未選擇任何檔案</span>
+                            <input type="file" id="logoUpload" accept="image/*" class="hidden">
+                        </label>
+                        <button id="clearLogoBtn" class="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors hidden flex-shrink-0" title="清除 Logo">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-400">Logo 會顯示在 QR Code 中央。</p>
+                </div>
+
+                <!-- Background Upload -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                        上傳 PrettyQRCode 背景圖
+                        <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">選填</span>
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <label id="bgUploadLabel" class="flex-1 flex items-center gap-2 px-3 py-3 border border-gray-200 rounded-xl cursor-pointer hover:border-lihi-blue hover:bg-lihi-blue/5 transition-all overflow-hidden">
+                            <span class="text-gray-400 text-sm truncate" id="bgFileName">未選擇任何檔案</span>
+                            <input type="file" id="bgUpload" accept="image/*" class="hidden">
+                        </label>
+                        <button id="clearBgBtn" class="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors hidden flex-shrink-0" title="清除背景">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm text-gray-400">選擇圖片後會顯示在 QR Code 背景。</p>
+                </div>
+            </div>
+
+            <!-- Two Column Layout: QR Preview (Left) | Pretty QR Code Examples (Right) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Left Column: QR Code Preview -->
+                <div>
+                    <div id="previewArea" class="relative rounded-2xl border border-gray-100 overflow-hidden p-4" style="background: radial-gradient(760px 360px at 10% 10%, rgba(37, 99, 235, .06), transparent 55%), radial-gradient(680px 360px at 92% 20%, rgba(255, 77, 125, .06), transparent 55%), #fff;">
+                        <p class="text-sm font-medium text-gray-700 mb-4 text-center">可掃描預覽</p>
+                        <div id="qrPreviewContainer" class="flex justify-center gap-4">
+                            <!-- QR Code will be rendered here -->
+                            <div id="qrCodePreview" class="rounded-xl bg-white border border-gray-200 overflow-hidden p-2"></div>
+                        </div>
+                    </div>
+                    <p id="logoRemoveHint" class="mt-2 text-xs sm:text-sm text-gray-500 text-center">如果要變更或移除 lihi logo<a href="https://app.lihi.io/admin/register" class="text-lihi-blue hover:underline">請註冊</a></p>
+                </div>
+
+                <!-- Right Column: Pretty QR Code Examples -->
+                <div>
+                    <div class="rounded-2xl border border-gray-100 bg-gray-50/50 p-4">
+                        <p class="text-sm font-medium text-gray-700 mb-4 text-center">Pretty QR Code 範例</p>
+                        <div class="flex justify-center gap-4">
+                            <div class="rounded-xl bg-white border border-gray-200 overflow-hidden p-2">
+                                <img src="./images/qrcode-example1.jpg" alt="Pretty QR Code 範例 1" class="w-[160px] h-[160px] object-contain">
+                            </div>
+                            <div class="hidden sm:block rounded-xl bg-white border border-gray-200 overflow-hidden p-2">
+                                <img src="./images/qrcode-example2.jpg" alt="Pretty QR Code 範例 2" class="w-[160px] h-[160px] object-contain">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <button id="prevStepBtn" class="px-6 py-3 border border-gray-300 text-gray-600 rounded-xl font-medium hover:bg-gray-50 transition-all">
+                        上一步
+                    </button>
+                    <button id="generateBtn" class="px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all">
+                        下載 QR Code
+                    </button>
+                </div>
+                <p id="registerPrompt" class="text-sm text-gray-500"><a href="https://app.lihi.io/admin/register" class="text-lihi-blue hover:underline font-medium">馬上註冊</a> lihi，試試看最強的數位行銷工具</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-4xl mx-auto pt-2 pb-4 text-center">
+        <p class="text-sm text-gray-400">
+            Powered by <a href="https://lihi.io" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-lihi-blue transition-colors font-medium">lihi.io</a>
+        </p>
+    </footer>
+
+    <!-- Download Modal -->
+    <div id="downloadModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modalBackdrop"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modal-in">
+                <div class="p-6">
+                    <!-- Content -->
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">QR Code 已產生</h3>
+
+                        <!-- Normal mode hint -->
+                        <p id="downloadHintNormal" class="text-gray-500 text-sm mb-4">點擊下方按鈕下載您的 QR Code</p>
+
+                        <!-- QR Preview in Modal -->
+                        <div class="flex justify-center mb-6">
+                            <div class="bg-gray-50 rounded-2xl p-4">
+                                <div id="modalQrPreview" class="flex items-center justify-center" style="width: 240px; height: 240px; overflow: hidden;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile hint: long-press to save to photos -->
+                        <div id="downloadHintInApp" class="hidden mb-4">
+                            <div class="inline-flex items-center justify-center px-4 py-2 bg-lihi-blue/90 backdrop-blur-sm rounded-full border border-lihi-pink/30">
+                                <span class="text-sm font-medium text-white">長按圖片保存</span>
+                            </div>
+                        </div>
+
+                        <!-- Download Buttons (hidden in in-app browser) -->
+                        <div id="downloadButtonsNormal" class="space-y-3">
+                            <div class="flex gap-2 justify-center">
+                                <button id="downloadPngBtn" class="flex-1 px-4 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                    </svg>
+                                    下載 PNG
+                                </button>
+                                <button id="downloadSvgBtn" class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                    </svg>
+                                    下載 SVG
+                                </button>
+                            </div>
+                            <button id="closeModalBtn" class="w-full px-6 py-3 text-gray-500 hover:text-gray-700 transition-all text-sm">
+                                關閉
+                            </button>
+                        </div>
+
+                        <!-- In-app browser mode: only close button -->
+                        <div id="downloadButtonsInApp" class="hidden">
+                            <button id="closeModalBtnInApp" class="w-full px-6 py-3 bg-gray-100 text-gray-600 rounded-xl font-medium hover:bg-gray-200 transition-all">
+                                關閉
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Login Modal -->
+    <div id="quickLoginModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="quickLoginBackdrop"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modal-in">
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-lihi-pink/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-lihi-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">請登入以啟用此功能</h3>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="quickLoginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input
+                                type="email"
+                                id="loginEmail"
+                                placeholder="請輸入Email"
+                                required
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">密碼</label>
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="請輸入密碼"
+                                required
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                            >
+                        </div>
+
+                        <!-- Error Message -->
+                        <div id="loginError" class="hidden bg-red-50 border border-red-200 rounded-xl p-3">
+                            <p id="loginErrorMessage" class="text-red-600 text-sm"></p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            type="submit"
+                            id="quickLoginSubmitBtn"
+                            class="w-full px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                        >
+                            <span>登入</span>
+                            <svg id="loginSpinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4 my-6">
+                        <div class="flex-1 border-t border-gray-200"></div>
+                        <span class="text-gray-400 text-sm">或</span>
+                        <div class="flex-1 border-t border-gray-200"></div>
+                    </div>
+
+                    <!-- Register Link -->
+                    <div class="text-center">
+                        <p class="text-gray-600 text-sm mb-3">還沒有帳號？</p>
+                        <button
+                            type="button"
+                            id="goToRegisterBtn"
+                            class="w-full px-6 py-3 border border-lihi-pink text-lihi-pink rounded-xl font-medium hover:bg-lihi-pink/5 transition-all"
+                        >
+                            立即註冊
+                        </button>
+                    </div>
+
+                    <!-- Close Button -->
+                    <button
+                        type="button"
+                        id="closeQuickLoginBtn"
+                        class="w-full mt-4 px-6 py-3 text-gray-500 hover:text-gray-700 transition-all text-sm"
+                    >
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Token Expired Modal (驗證過期提示) -->
+    <div id="goToDashboardModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="goToDashboardBackdrop"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modal-in">
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2" id="goToDashboardTitle">驗證已過期</h3>
+                        <p class="text-gray-500 text-sm" id="goToDashboardMessage">您的登入驗證已過期，<br class="sm:hidden">請從 lihi 後台重新進入以啟用此功能。</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <a
+                            href="https://app.lihi.io/admin/dashboard"
+                            target="_blank"
+                            id="goToDashboardBtn"
+                            class="w-full px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                        >
+                            <span>前往 Lihi 後台</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                        <button
+                            type="button"
+                            id="closeGoToDashboardBtn"
+                            class="w-full px-6 py-3 text-gray-500 hover:text-gray-700 transition-all text-sm"
+                        >
+                            稍後再說
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Short URL Modal -->
+    <div id="createShortUrlModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="createShortUrlBackdrop"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg animate-modal-in my-4">
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">產生短網址</h3>
+                        <button type="button" id="closeCreateShortUrlBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Form Content -->
+                    <form id="createShortUrlForm" class="space-y-4">
+                        <!-- Domain Selector -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">網域</label>
+                            <select
+                                id="shortUrlDomain"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white"
+                            >
+                            </select>
+                        </div>
+
+                        <!-- Alias Input (only for custom domains) -->
+                        <div id="aliasInputContainer" class="hidden">
+                            <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                                自訂網址
+                                <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">選填</span>
+                            </label>
+                            <div class="flex items-center">
+                                <input
+                                    type="text"
+                                    id="shortUrlAlias"
+                                    pattern="^[\u4e00-\u9fa5a-zA-Z0-9]+$"
+                                    placeholder="輸入自訂網址"
+                                    class="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                                >
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">僅限中文、英文及數字</p>
+                        </div>
+
+                        <!-- Tag Input -->
+                        <div>
+                            <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                                標籤
+                                <span class="px-2 py-0.5 text-xs bg-lihi-pink/10 text-lihi-pink rounded-full border border-lihi-pink/20">選填</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="shortUrlTag"
+                                placeholder="輸入標籤，多個標籤請用逗號分隔"
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                            >
+                        </div>
+
+                        <!-- URL Inputs Container -->
+                        <div id="shortUrlInputsContainer">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">網址</label>
+                            <div class="space-y-2" id="shortUrlInputsList">
+                                <div class="short-url-input-row flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        class="short-url-input flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all"
+                                        placeholder="https://example.com"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons: UTM Builder & Add Split URL -->
+                        <div class="flex gap-2">
+                            <button
+                                type="button"
+                                id="toggleUtmBuilderBtn"
+                                class="flex-1 px-4 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-lihi-blue/90 transition-all text-sm"
+                            >
+                                UTM Builder
+                            </button>
+                            <button
+                                type="button"
+                                id="addSplitUrlBtn"
+                                class="flex-1 px-4 py-3 bg-lihi-pink text-white rounded-xl font-medium hover:bg-lihi-pink/90 transition-all text-sm"
+                            >
+                                新增分流
+                            </button>
+                        </div>
+
+
+                        <!-- Error Message -->
+                        <div id="createShortUrlError" class="hidden bg-red-50 border border-red-200 rounded-xl p-3">
+                            <p id="createShortUrlErrorMessage" class="text-red-600 text-sm"></p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            type="submit"
+                            id="submitCreateShortUrlBtn"
+                            class="w-full px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-lihi-blue/90 transition-all flex items-center justify-center gap-2"
+                        >
+                            <span>建立短網址</span>
+                            <svg id="createShortUrlSpinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UTM Builder Modal (Secondary modal, z-60 to appear above other modals) -->
+    <div id="utmBuilderModal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="utmBuilderBackdrop"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modal-in my-4">
+                <div class="p-6">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-800">UTM Builder</h3>
+                        <button type="button" id="closeUtmBuilderBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- UTM Builder Content -->
+                    <div class="space-y-4">
+                        <!-- Target URL Selector -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Target (目標網址)</label>
+                            <select
+                                id="utmTargetUrl"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white text-sm"
+                            >
+                                <option value="">請先輸入網址</option>
+                            </select>
+                        </div>
+
+                        <!-- Source -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Source</label>
+                            <select
+                                id="utmSourceSelect"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white text-sm"
+                            >
+                                <option value="">Select Source</option>
+                                <option value="facebook">facebook</option>
+                                <option value="google">google</option>
+                                <option value="blog">blog</option>
+                                <option value="instagram">instagram</option>
+                                <option value="line">line</option>
+                                <option value="sms">sms</option>
+                                <option value="email">email</option>
+                                <option value="youtube">youtube</option>
+                                <option value="web">web</option>
+                                <option value="services">services</option>
+                                <option value="other">other</option>
+                            </select>
+                            <input
+                                type="text"
+                                id="utmSourceOther"
+                                placeholder="輸入自訂 Source"
+                                class="hidden w-full mt-2 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all text-sm"
+                            >
+                        </div>
+
+                        <!-- Medium -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Medium</label>
+                            <select
+                                id="utmMediumSelect"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all bg-white text-sm"
+                            >
+                                <option value="">Select Medium</option>
+                                <option value="ads">ads</option>
+                                <option value="post">post</option>
+                                <option value="post-ads">post-ads</option>
+                                <option value="promotion">promotion</option>
+                                <option value="system">system</option>
+                                <option value="chat">chat</option>
+                                <option value="other">other</option>
+                            </select>
+                            <input
+                                type="text"
+                                id="utmMediumOther"
+                                placeholder="輸入自訂 Medium"
+                                class="hidden w-full mt-2 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all text-sm"
+                            >
+                        </div>
+
+                        <!-- Campaign -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Campaign</label>
+                            <input
+                                type="text"
+                                id="utmCampaign"
+                                placeholder="輸入 Campaign"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all text-sm"
+                            >
+                        </div>
+
+                        <!-- Content -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                            <input
+                                type="text"
+                                id="utmContent"
+                                placeholder="輸入 Content"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all text-sm"
+                            >
+                        </div>
+
+                        <!-- Term -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Term</label>
+                            <input
+                                type="text"
+                                id="utmTerm"
+                                placeholder="輸入 Term"
+                                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-lihi-blue/20 focus:border-lihi-blue outline-none transition-all text-sm"
+                            >
+                        </div>
+
+                        <!-- Apply UTM Button -->
+                        <button
+                            type="button"
+                            id="applyUtmBtn"
+                            class="w-full px-4 py-3 bg-lihi-pink text-white rounded-xl font-medium hover:bg-lihi-pink/90 transition-all text-sm"
+                        >
+                            套用 UTM 參數
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SSID Warning Modal -->
+    <div id="ssidWarningModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-modal-in">
+                <div class="p-6">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">WiFi 名稱相容性提醒</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">您輸入的 WiFi 名稱（SSID）含有非英文字元。部分裝置在掃描 QR Code 後，可能因為不相容而無法自動連線。<br><br>建議改用英文、數字命名，以確保所有裝置都能順利連線。</p>
+                    </div>
+                    <div class="space-y-3">
+                        <button id="ssidWarningBackBtn" class="w-full px-6 py-3 bg-lihi-blue text-white rounded-xl font-medium hover:bg-opacity-90 transition-all">
+                            返回修改名稱
+                        </button>
+                        <button id="ssidWarningContinueBtn" class="w-full px-6 py-3 text-gray-500 hover:text-gray-700 transition-all text-sm">
+                            我了解，繼續產生
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <span id="toastMessage">操作成功</span>
+    </div>
+
+    <!-- App Script -->
+    <script src="./js/app.js"></script>
+</body>
+</html>

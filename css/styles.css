@@ -1,0 +1,335 @@
+/* QR Code Generator - Custom Styles */
+
+/* Base font improvements */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Header container constraint */
+header {
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+header > div {
+    max-width: 64rem; /* Same as max-w-4xl (1024px) to match main content */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Modal animation */
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-modal-in {
+    animation: modal-in 0.2s ease-out;
+}
+
+/* Toast notification */
+#toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* File input label hover */
+label:has(input[type="file"]):hover {
+    border-color: #020266;
+    background-color: rgba(2, 2, 102, 0.05);
+}
+
+/* Tab transitions */
+.qr-type-tab {
+    transition: all 0.2s ease;
+}
+
+.tab-content {
+    transition: opacity 0.2s ease;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #020266;
+    outline-offset: 2px;
+}
+
+/* Prevent text selection on buttons */
+button {
+    user-select: none;
+}
+
+/* Smooth transitions for cards */
+.bg-white {
+    transition: box-shadow 0.2s ease;
+}
+
+/* Step indicator styling */
+#step1, #step2 {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#step1.hidden, #step2.hidden {
+    display: none;
+}
+
+/* QR Preview container */
+#qrPreviewContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* QR Code styling */
+#qrCodePreview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#qrCodePreview svg,
+#qrCodePreview canvas,
+#qrCodePreview img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Modal QR Preview */
+#modalQrPreview {
+    width: 240px;
+    height: 240px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#modalQrPreview svg {
+    width: 240px !important;
+    height: 240px !important;
+}
+
+/* QR with background wrapper - CSS scales it */
+.qr-with-bg {
+    border-radius: 12px;
+    overflow: hidden;
+    width: 260px;
+    height: 260px;
+    flex-shrink: 0;
+}
+
+.qr-with-bg svg {
+    display: block;
+    width: 260px;
+    height: 260px;
+}
+
+/* Upload label styling */
+label:has(input[type="file"]) {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+label:has(input[type="file"]):hover {
+    border-color: #020266 !important;
+    background-color: rgba(2, 2, 102, 0.02);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Gradient background for preview */
+#previewArea {
+    background: linear-gradient(135deg, #f0f4ff 0%, #fce7f3 50%, #fef3c7 100%);
+    transition: background 0.3s ease;
+}
+
+/* Button hover effects */
+button:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+button:not(:disabled):active {
+    transform: translateY(0);
+}
+
+/* Modal backdrop */
+#modalBackdrop {
+    backdrop-filter: blur(4px);
+}
+
+/* Input placeholder styling */
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Select dropdown arrow */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Password toggle button */
+#toggleWifiPassword {
+    transition: color 0.2s ease;
+}
+
+/* Error state for required fields */
+.input-error {
+    border-color: #ef4444 !important;
+    border-width: 1px !important;
+    box-shadow: none !important;
+}
+
+.input-error:focus {
+    border-color: #ef4444 !important;
+    ring: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Clear buttons */
+#clearBgBtn,
+#clearLogoBtn {
+    transition: all 0.2s ease;
+}
+
+#clearBgBtn:hover,
+#clearLogoBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-radius: 0.5rem;
+}
+
+/* Download buttons */
+#downloadPngBtn,
+#downloadSvgBtn {
+    transition: all 0.2s ease;
+}
+
+/* ==================== MOBILE RESPONSIVE ==================== */
+
+/* Mobile */
+@media (max-width: 640px) {
+    /* Tab buttons */
+    .qr-type-tab {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    /* Upload label text */
+    #bgFileName,
+    #logoFileName {
+        font-size: 0.75rem;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    /* QR Preview - slightly smaller on mobile but still larger than before */
+    .qr-with-bg {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .qr-with-bg svg {
+        width: 240px;
+        height: 240px;
+    }
+    
+    /* Modal QR Preview */
+    #modalQrPreview {
+        width: 220px;
+        height: 220px;
+    }
+    
+    #modalQrPreview svg {
+        width: 220px !important;
+        height: 220px !important;
+    }
+    
+    /* Modal adjustments */
+    #downloadModal > div > div {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+    
+    /* Download buttons in modal */
+    #downloadModal .flex.gap-2 {
+        flex-direction: column;
+    }
+    
+    #downloadPngBtn,
+    #downloadSvgBtn {
+        width: 100%;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+    .qr-type-tab {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.5rem;
+    }
+    
+    /* Smaller buttons */
+    #nextStepBtn,
+    #prevStepBtn,
+    #generateBtn,
+    #clearBtn {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
