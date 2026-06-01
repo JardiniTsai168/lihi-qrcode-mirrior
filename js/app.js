@@ -2119,17 +2119,18 @@
 
     // ==================== Mobile Navigation ====================
     function initMobileNavigation() {
+        const nav = document.querySelector('.lihi-site-nav');
         const hamburger = document.getElementById('lihiNavHamburger');
         const mobileMenu = document.getElementById('lihiMobileMenu');
         const mobileOverlay = document.getElementById('lihiMobileOverlay');
+        const mobileClose = document.getElementById('lihiMobileClose');
         const submenuToggle = document.getElementById('lihiMobileSubmenuToggle');
         const submenu = document.getElementById('lihiMobileSubmenu');
 
-        if (!hamburger || !mobileMenu || !mobileOverlay) return;
+        if (!nav || !hamburger || !mobileMenu || !mobileOverlay) return;
 
         function setMenuState(isOpen) {
-            mobileMenu.classList.toggle('open', isOpen);
-            mobileOverlay.classList.toggle('open', isOpen);
+            nav.setAttribute('data-mobile-nav-open', isOpen ? 'true' : 'false');
             hamburger.classList.toggle('active', isOpen);
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
@@ -2154,6 +2155,9 @@
         });
 
         mobileOverlay.addEventListener('click', closeMenu);
+        if (mobileClose) {
+            mobileClose.addEventListener('click', closeMenu);
+        }
 
         mobileMenu.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', closeMenu);

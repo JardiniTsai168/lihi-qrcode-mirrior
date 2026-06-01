@@ -127,7 +127,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen qrcode-page-body">
     <iframe id="qrcodeAuth" style="display:none"></iframe>
-    <nav class="lihi-site-nav">
+    <nav class="lihi-site-nav" data-mobile-nav-open="false">
         <div class="lihi-site-nav-inner">
             <a href="https://lihi.io/" class="lihi-site-logo" aria-label="lihi.io">
                 <img src="./assets/images/lihi-logo-primary.png" alt="lihi">
@@ -150,11 +150,16 @@
                 <a href="https://app.lihi.io/admin/login" target="_blank" rel="noopener noreferrer" class="lihi-btn-secondary">登入</a>
                 <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary">免費註冊</a>
             </div>
-            <button type="button" class="lihi-site-nav-hamburger" id="lihiNavHamburger" aria-label="選單" aria-expanded="false">
+            <button type="button" class="lihi-site-nav-hamburger" id="lihiNavHamburger" aria-label="選單" aria-controls="lihiMobileMenu" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
         </div>
-        <div class="lihi-site-nav-mobile-menu" id="lihiMobileMenu" aria-hidden="true">
+        <div class="lihi-site-nav-mobile-overlay" id="lihiMobileOverlay" aria-hidden="true"></div>
+        <aside class="lihi-site-nav-mobile-menu" id="lihiMobileMenu" aria-hidden="true">
+            <div class="lihi-site-mobile-menu-header">
+                <strong>選單</strong>
+                <button type="button" class="lihi-site-mobile-close" id="lihiMobileClose" aria-label="關閉選單">close</button>
+            </div>
             <a href="https://domain.lihi.io/" target="_blank" rel="noopener noreferrer">品牌網域</a>
             <a href="https://app.lihi.io/admin/" target="_blank" rel="noopener noreferrer">行銷工具</a>
             <a href="https://knowledge.lihi.io/pricing/" target="_blank" rel="noopener noreferrer">方案價格</a>
@@ -169,8 +174,7 @@
                 <a href="https://app.lihi.io/admin/login" target="_blank" rel="noopener noreferrer" class="lihi-btn-secondary">登入</a>
                 <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary">免費註冊</a>
             </div>
-        </div>
-        <div class="lihi-site-nav-mobile-overlay" id="lihiMobileOverlay" aria-hidden="true"></div>
+        </aside>
     </nav>
 
     <!-- Main Content -->
