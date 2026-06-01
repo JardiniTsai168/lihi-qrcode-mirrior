@@ -1,5 +1,9 @@
 /* QR Code Generator - Custom Styles */
 
+:root {
+    --qrcode-shell-max-width: 56rem;
+}
+
 /* Base font improvements */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -27,7 +31,7 @@ body {
 }
 
 .lihi-site-nav-inner {
-    max-width: 1024px;
+    max-width: var(--qrcode-shell-max-width);
     margin: 0 auto;
     padding: 16px 0;
     display: flex;
@@ -127,7 +131,7 @@ body {
 }
 
 .lihi-site-footer {
-    max-width: 1024px;
+    max-width: var(--qrcode-shell-max-width);
     margin: 0 auto;
     padding: 28px 0 40px;
     border-top: 1px solid rgba(26, 26, 94, 0.08);
@@ -180,7 +184,7 @@ header {
 }
 
 header > div {
-    max-width: 64rem; /* Same as max-w-4xl (1024px) to match main content */
+    max-width: var(--qrcode-shell-max-width);
     margin-left: auto;
     margin-right: auto;
 }
