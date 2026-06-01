@@ -177,6 +177,80 @@ body {
     font-size: 13px;
 }
 
+.qrcode-seo-section {
+    max-width: var(--qrcode-shell-max-width);
+    margin: 0 auto;
+    padding: 0 0 28px;
+}
+
+.qrcode-seo-shell {
+    padding: 30px;
+    border: 1px solid rgba(26, 26, 94, 0.08);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at top right, rgba(255, 107, 157, 0.08), transparent 28%),
+        linear-gradient(180deg, #ffffff 0%, #fff8fb 100%);
+    box-shadow: 0 18px 34px rgba(26, 26, 94, 0.05);
+}
+
+.qrcode-seo-header h2,
+.qrcode-seo-copy h2 {
+    margin: 0;
+    color: #1a1a5e;
+    font-size: 1.65rem;
+    line-height: 1.2;
+    font-weight: 800;
+}
+
+.qrcode-seo-header p,
+.qrcode-seo-copy p,
+.qrcode-seo-card p {
+    color: #5f6788;
+    line-height: 1.75;
+}
+
+.qrcode-seo-header p {
+    margin: 12px 0 0;
+    font-size: 1rem;
+}
+
+.qrcode-seo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.qrcode-seo-card {
+    padding: 22px 20px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 107, 157, 0.12);
+    box-shadow: 0 12px 22px rgba(26, 26, 94, 0.04);
+}
+
+.qrcode-seo-card h3 {
+    margin: 0 0 10px;
+    color: #1a1a5e;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    font-weight: 800;
+}
+
+.qrcode-seo-card p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.qrcode-seo-copy {
+    margin-top: 26px;
+}
+
+.qrcode-seo-copy p {
+    margin: 14px 0 0;
+    font-size: 0.98rem;
+}
+
 .faq-section {
     max-width: var(--qrcode-shell-max-width);
     margin: 0 auto;
@@ -576,6 +650,30 @@ select {
 
     .qrcode-hero-copy {
         margin-bottom: 22px;
+    }
+
+    .qrcode-seo-shell {
+        padding: 22px 18px 24px;
+        border-radius: 22px;
+    }
+
+    .qrcode-seo-header h2,
+    .qrcode-seo-copy h2 {
+        font-size: 1.35rem;
+    }
+
+    .qrcode-seo-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .qrcode-seo-card {
+        padding: 18px 16px;
+        border-radius: 18px;
+    }
+
+    .qrcode-seo-copy {
+        margin-top: 22px;
     }
 
     .faq-section {
