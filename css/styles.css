@@ -288,6 +288,16 @@ body {
     color: #c31778;
 }
 
+.faq-cta-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 22px;
+}
+
+.faq-cta-button {
+    min-width: 156px;
+}
+
 /* Header container constraint */
 header {
     background-color: #ffffff;
@@ -590,6 +600,10 @@ select {
     .faq-answer {
         padding: 0 18px 18px;
         font-size: 15px;
+    }
+
+    .faq-cta-wrap {
+        padding-top: 18px;
     }
 
     /* Tab buttons */
