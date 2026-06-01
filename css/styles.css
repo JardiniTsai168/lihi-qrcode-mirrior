@@ -29,7 +29,7 @@ body {
 .lihi-site-nav-inner {
     max-width: 1024px;
     margin: 0 auto;
-    padding: 16px 4px;
+    padding: 16px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -110,15 +110,6 @@ body {
 .qrcode-hero-copy {
     text-align: center;
     margin-bottom: 28px;
-}
-
-.qrcode-hero-kicker {
-    margin: 0 0 8px;
-    color: #ff6b9d;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
 }
 
 .qrcode-hero-title {
