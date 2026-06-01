@@ -162,6 +162,11 @@ body {
     display: none;
 }
 
+.lihi-site-nav-mobile-menu[hidden],
+.lihi-site-nav-mobile-overlay[hidden] {
+    display: none !important;
+}
+
 .lihi-site-nav-mobile-overlay {
     position: fixed;
     top: 73px;
@@ -788,17 +793,20 @@ select {
 
     .lihi-site-nav-links,
     .lihi-site-nav-cta {
-        display: none;
+        display: none !important;
     }
 
-    .lihi-site-nav-hamburger,
-    .lihi-site-nav-mobile-menu,
-    .lihi-site-nav-mobile-overlay {
+    .lihi-site-nav-hamburger {
         display: flex;
     }
 
     .lihi-site-nav-mobile-menu {
+        display: flex;
         flex-direction: column;
+    }
+
+    .lihi-site-nav-mobile-overlay {
+        display: block;
     }
 
     .lihi-site-footer-inner {

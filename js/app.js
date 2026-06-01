@@ -2128,10 +2128,14 @@
         if (!hamburger || !mobileMenu || !mobileOverlay) return;
 
         function setMenuState(isOpen) {
+            mobileMenu.hidden = !isOpen;
+            mobileOverlay.hidden = !isOpen;
             mobileMenu.classList.toggle('open', isOpen);
             mobileOverlay.classList.toggle('open', isOpen);
             hamburger.classList.toggle('active', isOpen);
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            mobileOverlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
             document.body.classList.toggle('lihi-mobile-menu-open', isOpen);
         }
 
