@@ -2127,9 +2127,12 @@
 
         if (!hamburger || !mobileMenu || !mobileOverlay) return;
 
+        // Keep the nodes rendered and let CSS handle visibility so touch events
+        // don't get stuck behind the hidden/open state mix.
+        mobileMenu.hidden = false;
+        mobileOverlay.hidden = false;
+
         function setMenuState(isOpen) {
-            mobileMenu.hidden = !isOpen;
-            mobileOverlay.hidden = !isOpen;
             mobileMenu.classList.toggle('open', isOpen);
             mobileOverlay.classList.toggle('open', isOpen);
             hamburger.classList.toggle('active', isOpen);
@@ -2137,6 +2140,13 @@
             mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
             mobileOverlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
             document.body.classList.toggle('lihi-mobile-menu-open', isOpen);
+
+            if (!isOpen && submenu) {
+                submenu.classList.remove('open');
+            }
+            if (!isOpen && submenuToggle) {
+                submenuToggle.setAttribute('aria-expanded', 'false');
+            }
         }
 
         function closeMenu() {
@@ -2144,7 +2154,8 @@
         }
 
         hamburger.addEventListener('click', function() {
-            setMenuState(!mobileMenu.classList.contains('open'));
+            const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+            setMenuState(!isOpen);
         });
 
         mobileOverlay.addEventListener('click', closeMenu);
@@ -2160,15 +2171,11 @@
             });
         }
 
+        setMenuState(false);
+
         window.addEventListener('resize', function() {
             if (window.innerWidth > 640) {
                 closeMenu();
-                if (submenu) {
-                    submenu.classList.remove('open');
-                }
-                if (submenuToggle) {
-                    submenuToggle.setAttribute('aria-expanded', 'false');
-                }
             }
         });
     }
