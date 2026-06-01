@@ -2129,6 +2129,7 @@
             const isOpen = mobileMenu.classList.toggle('open');
             mobileOverlay.classList.toggle('open', isOpen);
             hamburger.classList.toggle('active', isOpen);
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             document.body.classList.toggle('menu-open', isOpen);
         }
 
@@ -2136,6 +2137,7 @@
             mobileMenu.classList.remove('open');
             mobileOverlay.classList.remove('open');
             hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-open');
         }
 
