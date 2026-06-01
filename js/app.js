@@ -2099,6 +2099,24 @@
         }
     }
 
+    // ==================== FAQ Accordion ====================
+    function initFaqAccordion() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        if (!faqItems.length) return;
+
+        faqItems.forEach(item => {
+            item.addEventListener('toggle', () => {
+                if (!item.open) return;
+
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.open = false;
+                    }
+                });
+            });
+        });
+    }
+
     // ==================== IP Geolocation ====================
     async function detectCountryByIP() {
         const DEFAULT_COUNTRY_CODE = '+886'; // 預設台灣
@@ -2247,6 +2265,7 @@
         }
         
         bindEvents();
+        initFaqAccordion();
         
         // Set initial state
         elements.currentType.textContent = typeNames[state.qrType];
