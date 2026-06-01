@@ -127,54 +127,50 @@
 </head>
 <body class="bg-gray-100 min-h-screen qrcode-page-body">
     <iframe id="qrcodeAuth" style="display:none"></iframe>
-    <nav class="lihi-site-nav" data-mobile-nav-open="false">
-        <div class="lihi-site-nav-inner">
-            <a href="https://lihi.io/" class="lihi-site-logo" aria-label="lihi.io">
-                <img src="./assets/images/lihi-logo-primary.png" alt="lihi">
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="https://lihi.io/" class="nav-logo" aria-label="lihi.io">
+                <img src="./assets/images/lihi-logo-primary.png" alt="lihi" style="height:40px">
             </a>
-            <div class="lihi-site-nav-links">
-                <a href="https://domain.lihi.io/" target="_blank" rel="noopener noreferrer">品牌網域</a>
-                <a href="https://app.lihi.io/admin/" target="_blank" rel="noopener noreferrer">行銷工具</a>
-                <a href="https://knowledge.lihi.io/pricing/" target="_blank" rel="noopener noreferrer">方案價格</a>
-                <div class="lihi-site-nav-dropdown">
-                    <button type="button" class="lihi-site-nav-dropdown-trigger" aria-expanded="false">行銷資源 ▾</button>
-                    <div class="lihi-site-nav-dropdown-menu">
-                        <a href="https://knowledge.lihi.io/" target="_blank" rel="noopener noreferrer">知識庫</a>
-                        <a href="https://knowledge.lihi.io/recommended-course-ch/" target="_blank" rel="noopener noreferrer">官方課程推薦</a>
-                        <a href="https://verify.lihi.io/" target="_blank" rel="noopener noreferrer">LIHI 證照驗證</a>
-                    </div>
-                </div>
-                <a href="https://knowledge.lihi.io/about-us-ch/" target="_blank" rel="noopener noreferrer">關於我們</a>
+            <ul class="nav-links">
+                <li><a href="https://domain.lihi.io/" target="_blank" rel="noopener noreferrer">品牌網域</a></li>
+                <li><a href="https://app.lihi.io/admin/" target="_blank" rel="noopener noreferrer">行銷工具</a></li>
+                <li><a href="https://knowledge.lihi.io/pricing/" target="_blank" rel="noopener noreferrer">方案價格</a></li>
+                <li class="has-dropdown">
+                    <a href="javascript:void(0)">行銷資源 ▾</a>
+                    <ul class="nav-dropdown">
+                        <li><a href="https://knowledge.lihi.io/" target="_blank" rel="noopener noreferrer">知識庫</a></li>
+                        <li><a href="https://knowledge.lihi.io/recommended-course-ch/" target="_blank" rel="noopener noreferrer">官方課程推薦</a></li>
+                        <li><a href="https://verify.lihi.io/" target="_blank" rel="noopener noreferrer">LIHI 證照驗證</a></li>
+                    </ul>
+                </li>
+                <li><a href="https://knowledge.lihi.io/about-us-ch/" target="_blank" rel="noopener noreferrer">關於我們</a></li>
+            </ul>
+            <div class="nav-cta desktop">
+                <a href="https://app.lihi.io/admin/login" target="_blank" rel="noopener noreferrer" class="lihi-btn-secondary" style="padding:8px 20px;font-size:14px">登入</a>
+                <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary" style="padding:10px 24px;font-size:15px">免費註冊</a>
             </div>
-            <div class="lihi-site-nav-cta">
-                <a href="https://app.lihi.io/admin/login" target="_blank" rel="noopener noreferrer" class="lihi-btn-secondary">登入</a>
-                <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary">免費註冊</a>
-            </div>
-            <button type="button" class="lihi-site-nav-hamburger" id="lihiNavHamburger" aria-label="選單" aria-controls="lihiMobileMenu" aria-expanded="false">
+            <button class="nav-hamburger" id="hamburger" aria-label="選單">
                 <span></span><span></span><span></span>
             </button>
         </div>
-        <div class="lihi-site-nav-mobile-overlay" id="lihiMobileOverlay" aria-hidden="true"></div>
-        <aside class="lihi-site-nav-mobile-menu" id="lihiMobileMenu" aria-hidden="true">
-            <div class="lihi-site-mobile-menu-header">
-                <strong>選單</strong>
-                <button type="button" class="lihi-site-mobile-close" id="lihiMobileClose" aria-label="關閉選單">close</button>
-            </div>
+        <div class="nav-mobile-menu" id="mobileMenu">
             <a href="https://domain.lihi.io/" target="_blank" rel="noopener noreferrer">品牌網域</a>
             <a href="https://app.lihi.io/admin/" target="_blank" rel="noopener noreferrer">行銷工具</a>
             <a href="https://knowledge.lihi.io/pricing/" target="_blank" rel="noopener noreferrer">方案價格</a>
-            <button type="button" class="lihi-site-mobile-submenu-toggle" id="lihiMobileSubmenuToggle" aria-expanded="false">行銷資源 ▾</button>
-            <div class="lihi-site-mobile-submenu" id="lihiMobileSubmenu">
+            <a href="javascript:void(0)" class="mobile-submenu-toggle">行銷資源 ▾</a>
+            <div class="mobile-submenu">
                 <a href="https://knowledge.lihi.io/" target="_blank" rel="noopener noreferrer">知識庫</a>
                 <a href="https://knowledge.lihi.io/recommended-course-ch/" target="_blank" rel="noopener noreferrer">官方課程推薦</a>
                 <a href="https://verify.lihi.io/" target="_blank" rel="noopener noreferrer">LIHI 證照驗證</a>
             </div>
             <a href="https://knowledge.lihi.io/about-us-ch/" target="_blank" rel="noopener noreferrer">關於我們</a>
-            <div class="lihi-site-mobile-cta-row">
+            <div class="mobile-cta-row">
                 <a href="https://app.lihi.io/admin/login" target="_blank" rel="noopener noreferrer" class="lihi-btn-secondary">登入</a>
-                <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary">免費註冊</a>
+                <a href="https://lihi.io/go/register" target="_blank" rel="noopener noreferrer" class="lihi-btn-primary" style="color:#fff">免費註冊</a>
             </div>
-        </aside>
+        </div>
+        <div class="nav-mobile-overlay" id="mobileOverlay"></div>
     </nav>
 
     <!-- Main Content -->

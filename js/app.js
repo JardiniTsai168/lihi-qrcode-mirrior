@@ -2119,58 +2119,38 @@
 
     // ==================== Mobile Navigation ====================
     function initMobileNavigation() {
-        const nav = document.querySelector('.lihi-site-nav');
-        const hamburger = document.getElementById('lihiNavHamburger');
-        const mobileMenu = document.getElementById('lihiMobileMenu');
-        const mobileOverlay = document.getElementById('lihiMobileOverlay');
-        const mobileClose = document.getElementById('lihiMobileClose');
-        const submenuToggle = document.getElementById('lihiMobileSubmenuToggle');
-        const submenu = document.getElementById('lihiMobileSubmenu');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
 
-        if (!nav || !hamburger || !mobileMenu || !mobileOverlay) return;
+        if (!hamburger || !mobileMenu || !mobileOverlay) return;
 
-        function setMenuState(isOpen) {
-            nav.setAttribute('data-mobile-nav-open', isOpen ? 'true' : 'false');
+        function toggleMenu() {
+            const isOpen = mobileMenu.classList.toggle('open');
+            mobileOverlay.classList.toggle('open', isOpen);
             hamburger.classList.toggle('active', isOpen);
-            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-            mobileOverlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-            document.body.classList.toggle('lihi-mobile-menu-open', isOpen);
-
-            if (!isOpen && submenu) {
-                submenu.classList.remove('open');
-            }
-            if (!isOpen && submenuToggle) {
-                submenuToggle.setAttribute('aria-expanded', 'false');
-            }
+            document.body.classList.toggle('menu-open', isOpen);
         }
 
         function closeMenu() {
-            setMenuState(false);
+            mobileMenu.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            hamburger.classList.remove('active');
+            document.body.classList.remove('menu-open');
         }
 
-        hamburger.addEventListener('click', function() {
-            const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
-            setMenuState(!isOpen);
-        });
-
+        hamburger.addEventListener('click', toggleMenu);
         mobileOverlay.addEventListener('click', closeMenu);
-        if (mobileClose) {
-            mobileClose.addEventListener('click', closeMenu);
-        }
-
-        mobileMenu.querySelectorAll('a').forEach(function(link) {
+        mobileMenu.querySelectorAll('a:not(.mobile-submenu-toggle)').forEach(function(link) {
             link.addEventListener('click', closeMenu);
         });
 
-        if (submenuToggle && submenu) {
+        const submenuToggle = mobileMenu.querySelector('.mobile-submenu-toggle');
+        if (submenuToggle) {
             submenuToggle.addEventListener('click', function() {
-                const isOpen = submenu.classList.toggle('open');
-                submenuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                this.nextElementSibling.classList.toggle('open');
             });
         }
-
-        setMenuState(false);
 
         window.addEventListener('resize', function() {
             if (window.innerWidth > 640) {
