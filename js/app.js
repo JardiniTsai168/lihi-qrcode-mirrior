@@ -2117,6 +2117,58 @@
         });
     }
 
+    // ==================== Mobile Navigation ====================
+    function initMobileNavigation() {
+        const hamburger = document.getElementById('lihiNavHamburger');
+        const mobileMenu = document.getElementById('lihiMobileMenu');
+        const mobileOverlay = document.getElementById('lihiMobileOverlay');
+        const submenuToggle = document.getElementById('lihiMobileSubmenuToggle');
+        const submenu = document.getElementById('lihiMobileSubmenu');
+
+        if (!hamburger || !mobileMenu || !mobileOverlay) return;
+
+        function setMenuState(isOpen) {
+            mobileMenu.classList.toggle('open', isOpen);
+            mobileOverlay.classList.toggle('open', isOpen);
+            hamburger.classList.toggle('active', isOpen);
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            document.body.classList.toggle('lihi-mobile-menu-open', isOpen);
+        }
+
+        function closeMenu() {
+            setMenuState(false);
+        }
+
+        hamburger.addEventListener('click', function() {
+            setMenuState(!mobileMenu.classList.contains('open'));
+        });
+
+        mobileOverlay.addEventListener('click', closeMenu);
+
+        mobileMenu.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', closeMenu);
+        });
+
+        if (submenuToggle && submenu) {
+            submenuToggle.addEventListener('click', function() {
+                const isOpen = submenu.classList.toggle('open');
+                submenuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 640) {
+                closeMenu();
+                if (submenu) {
+                    submenu.classList.remove('open');
+                }
+                if (submenuToggle) {
+                    submenuToggle.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
     // ==================== IP Geolocation ====================
     async function detectCountryByIP() {
         const DEFAULT_COUNTRY_CODE = '+886'; // 預設台灣
@@ -2266,6 +2318,7 @@
         
         bindEvents();
         initFaqAccordion();
+        initMobileNavigation();
         
         // Set initial state
         elements.currentType.textContent = typeNames[state.qrType];
