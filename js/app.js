@@ -2127,7 +2127,8 @@
         if (!nav || !hamburger || !mobileMenu || !mobileOverlay) return;
 
         function syncHeaderHeight() {
-            document.documentElement.style.setProperty('--qrcode-header-height', `${nav.offsetHeight}px`);
+            const navHeight = Math.ceil(nav.getBoundingClientRect().height);
+            document.documentElement.style.setProperty('--qrcode-header-height', `${navHeight}px`);
         }
 
         function toggleMenu() {
@@ -2160,13 +2161,17 @@
         }
 
         syncHeaderHeight();
-        window.addEventListener('load', syncHeaderHeight);
+        window.addEventListener('load', function() {
+            syncHeaderHeight();
+            window.requestAnimationFrame(syncHeaderHeight);
+        });
         window.addEventListener('resize', function() {
             syncHeaderHeight();
             if (window.innerWidth > 640) {
                 closeMenu();
             }
         });
+        window.addEventListener('scroll', syncHeaderHeight, { passive: true });
     }
 
     // ==================== IP Geolocation ====================
