@@ -4,6 +4,7 @@
     --qrcode-shell-max-width: 56rem;
     --qrcode-header-height: 72px;
     --qrcode-main-top-gap: 32px;
+    --qrcode-nav-side-padding: 0px;
 }
 
 /* Base font improvements */
@@ -41,7 +42,7 @@ body {
     justify-content: space-between;
     max-width: var(--qrcode-shell-max-width);
     margin: 0 auto;
-    padding: 0;
+    padding: 0 var(--qrcode-nav-side-padding);
 }
 
 .nav-logo img {
@@ -785,11 +786,22 @@ select {
 /* Mobile */
 @media (max-width: 640px) {
     :root {
-        --qrcode-main-top-gap: 20px;
+        --qrcode-main-top-gap: 36px;
+        --qrcode-nav-side-padding: max(14px, env(safe-area-inset-right, 0px));
     }
 
     .qrcode-page-body {
         padding: 0 12px;
+    }
+
+    .nav-inner {
+        padding-left: max(14px, env(safe-area-inset-left, 0px));
+        padding-right: max(18px, env(safe-area-inset-right, 0px));
+    }
+
+    .nav-hamburger {
+        padding: 10px;
+        margin-right: -2px;
     }
 
     .desktop-only,
