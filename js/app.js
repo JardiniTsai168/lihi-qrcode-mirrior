@@ -2119,11 +2119,16 @@
 
     // ==================== Mobile Navigation ====================
     function initMobileNavigation() {
+        const nav = document.getElementById('nav');
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileOverlay = document.getElementById('mobileOverlay');
 
-        if (!hamburger || !mobileMenu || !mobileOverlay) return;
+        if (!nav || !hamburger || !mobileMenu || !mobileOverlay) return;
+
+        function syncHeaderHeight() {
+            document.documentElement.style.setProperty('--qrcode-header-height', `${nav.offsetHeight}px`);
+        }
 
         function toggleMenu() {
             const isOpen = mobileMenu.classList.toggle('open');
@@ -2154,7 +2159,10 @@
             });
         }
 
+        syncHeaderHeight();
+        window.addEventListener('load', syncHeaderHeight);
         window.addEventListener('resize', function() {
+            syncHeaderHeight();
             if (window.innerWidth > 640) {
                 closeMenu();
             }
