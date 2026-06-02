@@ -799,7 +799,7 @@ select {
     }
 
     .mobile-only.nav-hamburger {
-        display: flex;
+        display: flex !important;
     }
 
     .mobile-only.nav-mobile-menu,
